@@ -27,21 +27,40 @@ use Cake\Event\Event;
  */
 class AppController extends Controller
 {
-
-    /**
-     * Initialization hook method.
-     *
-     * Use this method to add common initialization code like loading components.
-     *
-     * e.g. `$this->loadComponent('Security');`
-     *
-     * @return void
-     */
+    public function beforeFilter(Event $event)
+    {
+      $this->_setMeta();
+    }
     public function initialize()
     {
         parent::initialize();
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth',[
+          'loginAction' =>[
+            'controller' => 'Users',
+            'action' => 'login'
+          ],
+          'loginRedirect' =>[
+            'controller' => 'Users',
+            'action' => 'index'
+          ],
+          'logoutRedirect' =>[
+            'controller' => 'Users',
+            'action' => 'login'
+          ],
+          'authenticate' =>[
+            'Form' => [
+              'userModel' => 'user',
+              'fields' =>[
+                'username' => 'name',
+                'password' => 'password'
+              ]
+            ]
+          ],
+          'authError' => 'ログインしてください',
+          'flash' =>['element' =>'error','key' =>'auth']
+        ]);
 
         /*
          * Enable the following components for recommended CakePHP security settings.
@@ -50,6 +69,7 @@ class AppController extends Controller
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
     }
+
 
     /**
      * Before render callback.
@@ -64,5 +84,10 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
+    }
+
+    protected function _setMeta()
+    {
+      $this->set('title','demotter');
     }
 }

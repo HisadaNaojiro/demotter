@@ -10,6 +10,7 @@
           <a class="navbar-brand" href="#">Demo Twitter</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+          <?php if($authenticate): ?>
           <ul class="nav navbar-nav">
             <li>
               <a href="#">
@@ -22,9 +23,9 @@
               </a>
             </li>
           </ul>
-          
+
           <p class="navbar-text navbar-right">
-            <a href="#" class="navbar-link">
+            <a href="<?php echo $this->Url->build(['controller' => 'users','action' => 'logout']); ?>" class="navbar-link">
               ログアウト
             </a>
           </p>
@@ -45,6 +46,13 @@
               </ul>
             </li>
           </ul>
+          <?php else: ?>
+            <p class="navbar-text navbar-right">
+              <a href="<?php echo $this->Url->build(['controller' => 'users','action' => 'login']); ?>" class="navbar-link">
+                ログイン
+              </a>
+            </p>
+          <?php endif; ?>
         </div><!--/.nav-collapse -->
       </div>
     </nav>

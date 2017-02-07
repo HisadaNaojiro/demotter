@@ -45,16 +45,17 @@ Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
     //ユーザ一
-    $routes->connect('/',                       ['controller' => 'Users', 'action' => 'index']);
-    $routes->connect('/users/login',            ['controller' => 'Users','action' => 'login']);
-    $routes->connect('/users/add',              ['controller' => 'Users','action' => 'add']);
+    $routes->connect('/',                              ['controller' => 'Users', 'action' => 'index']);
+    $routes->connect('/users/login',                   ['controller' => 'Users','action' => 'login']);
+    $routes->connect('/users/add',                     ['controller' => 'Users','action' => 'add']);
 
     //レッスン
-    $routes->connect('/lesson/',                ['controller' => 'Lessons','action' => 'index']);
-    $routes->connect('/lesson/base1',           ['controller' => 'Lessons','action' => 'base1']);
-    $routes->connect('/lesson/base2',           ['controller' => 'Lessons','action' => 'base2']);
-    $routes->connect('/lesson/base3',           ['controller' => 'Lessons','action' => 'base3']);
-    $routes->connect('/lesson/base4',           ['controller' => 'Lessons','action' => 'base4']);
+    $routes->connect('/lesson/',                       ['controller' => 'Lessons','action' => 'index']);
+    $routes->connect('/lesson/lesson4',                ['controller' => 'Lessons','action' => 'lesson4']);
+    $routes->connect('/lesson/base1',                  ['controller' => 'Bases','action' => 'base1']);
+    $routes->connect('/lesson/base2',                  ['controller' => 'Bases','action' => 'base2']);
+    $routes->connect('/lesson/base3',                  ['controller' => 'Bases','action' => 'base3']);
+    $routes->connect('/lesson/base4',                  ['controller' => 'Bases','action' => 'base4']);
 
     $routes->fallbacks(DashedRoute::class);
 });

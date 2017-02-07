@@ -44,31 +44,18 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-    /**
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, src/Template/Pages/home.ctp)...
-     */
-    $routes->connect('/', ['controller' => 'Users', 'action' => 'index']);
-    $routes->connect('/users/login',['controller' => 'Users','action' => 'login']);
-    $routes->connect('/users/add',['controller' => 'Users','action' => 'add']);
+    //ユーザ一
+    $routes->connect('/',                       ['controller' => 'Users', 'action' => 'index']);
+    $routes->connect('/users/login',            ['controller' => 'Users','action' => 'login']);
+    $routes->connect('/users/add',              ['controller' => 'Users','action' => 'add']);
 
-    /**
-     * Connect catchall routes for all controllers.
-     *
-     * Using the argument `DashedRoute`, the `fallbacks` method is a shortcut for
-     *    `$routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);`
-     *    `$routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);`
-     *
-     * Any route class can be used with this method, such as:
-     * - DashedRoute
-     * - InflectedRoute
-     * - Route
-     * - Or your own route class
-     *
-     * You can remove these routes once you've connected the
-     * routes you want in your application.
-     */
+    //レッスン
+    $routes->connect('/lesson/',                ['controller' => 'Lessons','action' => 'index']);
+    $routes->connect('/lesson/base1',           ['controller' => 'Lessons','action' => 'base1']);
+    $routes->connect('/lesson/base2',           ['controller' => 'Lessons','action' => 'base2']);
+    $routes->connect('/lesson/base3',           ['controller' => 'Lessons','action' => 'base3']);
+    $routes->connect('/lesson/base4',           ['controller' => 'Lessons','action' => 'base4']);
+
     $routes->fallbacks(DashedRoute::class);
 });
 

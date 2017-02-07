@@ -17,7 +17,7 @@
     <?php echo  $this->fetch('script') ?>
 </head>
 <body>
-    <?php echo $this->element('nav'); ?>
+    <?php echo $this->element('lesson/nav'); ?>
     <div class="container clearfix">
         <?php echo  $this->fetch('content') ?>
     </div>

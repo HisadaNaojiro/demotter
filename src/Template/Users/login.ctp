@@ -1,3 +1,4 @@
+<script src='https://www.google.com/recaptcha/api.js?hl=<?php echo $recaptcha['lang']; ?>'></script>
 <div class="page-header">
   <h1>ログイン</h1>
 </div>
@@ -24,4 +25,8 @@
       <?php echo $this->Form->submit('登録',['class' => 'btn btn-success']); ?>
     </div>
   </div>
+  <?php if($loginCount >= 3): ?>
+    <div class="g-recaptcha" data-siteKey="<?php echo $recaptcha['siteKey']; ?>"></div>
+  <?php endif; ?>
+
 <?php echo $this->Form->end(); ?>

@@ -634,7 +634,7 @@ abstract class Association
      * @param bool $joined Whether or not the row is a result of a direct join
      *   with this association
      * @param string $targetProperty The property name in the source results where the association
-     * data shuld be nested in. Will use the default one if not provided.
+     * data should be nested in. Will use the default one if not provided.
      * @return array
      */
     public function transformRow($row, $nestKey, $joined, $targetProperty = null)
@@ -736,7 +736,7 @@ abstract class Association
      *
      * @param mixed $conditions Conditions to be used, accepts anything Query::where()
      * can take.
-     * @return bool Success Returns true if one or more rows are affected.
+     * @return int Returns the number of affected rows.
      * @see \Cake\ORM\Table::deleteAll()
      */
     public function deleteAll($conditions)
@@ -900,8 +900,9 @@ abstract class Association
 
         if (count($foreignKey) !== count($bindingKey)) {
             if (empty($bindingKey)) {
-                $msg = 'The "%s" table does not define a primary key. Please set one.';
-                throw new RuntimeException(sprintf($msg, $this->target()->table()));
+                $table = $this->isOwningSide($this->source()) ? $this->source()->table() : $this->target()->table();
+                $msg = 'The "%s" table does not define a primary key, and cannot have join conditions generated.';
+                throw new RuntimeException(sprintf($msg, $table));
             }
 
             $msg = 'Cannot match provided foreignKey for "%s", got "(%s)" but expected foreign key for "(%s)"';

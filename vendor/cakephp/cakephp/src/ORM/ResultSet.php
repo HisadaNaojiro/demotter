@@ -313,8 +313,17 @@ class ResultSet implements ResultSetInterface
      */
     public function serialize()
     {
+        if (!$this->_useBuffering) {
+            $msg = 'You cannot serialize an un-buffered ResultSet. Use Query::bufferResults() to get a buffered ResultSet.';
+            throw new Exception($msg);
+        }
+
         while ($this->valid()) {
             $this->next();
+        }
+
+        if ($this->_results instanceof SplFixedArray) {
+            return serialize($this->_results->toArray());
         }
 
         return serialize($this->_results);
@@ -330,9 +339,10 @@ class ResultSet implements ResultSetInterface
      */
     public function unserialize($serialized)
     {
-        $this->_results = unserialize($serialized);
+        $results = (array)(unserialize($serialized) ?: []);
+        $this->_results = SplFixedArray::fromArray($results);
         $this->_useBuffering = true;
-        $this->_count = count($this->_results);
+        $this->_count = $this->_results->count();
     }
 
     /**
@@ -351,7 +361,13 @@ class ResultSet implements ResultSetInterface
             return $this->_count = $this->_statement->rowCount();
         }
 
-        return $this->_count = count($this->_results);
+        if ($this->_results instanceof SplFixedArray) {
+            $this->_count = $this->_results->count();
+        } else {
+            $this->_count = count($this->_results);
+        }
+
+        return $this->_count;
     }
 
     /**
@@ -499,7 +515,6 @@ class ResultSet implements ResultSetInterface
             if ($this->_hydrate) {
                 $options['source'] = $matching['instance']->registryAlias();
                 $entity = new $matching['entityClass']($results['_matchingData'][$alias], $options);
-                $entity->clean();
                 $results['_matchingData'][$alias] = $entity;
             }
         }
@@ -549,7 +564,6 @@ class ResultSet implements ResultSetInterface
 
             if ($this->_hydrate && $results[$alias] !== null && $assoc['canBeJoined']) {
                 $entity = new $assoc['entityClass']($results[$alias], $options);
-                $entity->clean();
                 $results[$alias] = $entity;
             }
 

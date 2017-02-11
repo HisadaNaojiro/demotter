@@ -41,6 +41,10 @@ class ComposerStaticInit94bf512174d5f62aad011cf8d80c53e0
             'Seld\\JsonLint\\' => 14,
             'Seld\\CliPrompt\\' => 15,
         ),
+        'R' => 
+        array (
+            'ReCaptcha\\' => 10,
+        ),
         'P' => 
         array (
             'Psy\\' => 4,
@@ -141,6 +145,10 @@ class ComposerStaticInit94bf512174d5f62aad011cf8d80c53e0
         'Seld\\CliPrompt\\' => 
         array (
             0 => __DIR__ . '/..' . '/seld/cli-prompt/src',
+        ),
+        'ReCaptcha\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/recaptcha/src/ReCaptcha',
         ),
         'Psy\\' => 
         array (

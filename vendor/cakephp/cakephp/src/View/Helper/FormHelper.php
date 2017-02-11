@@ -95,7 +95,7 @@ class FormHelper extends Helper
             'checkboxFormGroup' => '{{label}}',
             'checkboxWrapper' => '<div class="checkbox">{{label}}</div>',
             'dateWidget' => '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}{{meridian}}',
-            'error' => '<div class="text-danger">{{content}}</div>',
+            'error' => '<div class="error-message">{{content}}</div>',
             'errorList' => '<ul>{{content}}</ul>',
             'errorItem' => '<li>{{text}}</li>',
             'file' => '<input type="file" name="{{name}}"{{attrs}}>',
@@ -1043,6 +1043,7 @@ class FormHelper extends Helper
             $nestedInput = true;
         }
         $nestedInput = isset($options['nestedInput']) ? $options['nestedInput'] : $nestedInput;
+        unset($options['nestedInput']);
 
         if ($nestedInput === true && $options['type'] === 'checkbox' && !array_key_exists('hiddenField', $options) && $label !== false) {
             $options['hiddenField'] = '_split';
@@ -1058,7 +1059,11 @@ class FormHelper extends Helper
         }
 
         $label = $this->_getLabel($fieldName, compact('input', 'label', 'error', 'nestedInput') + $options);
-        $result = $this->_groupTemplate(compact('input', 'label', 'error', 'options'));
+        if ($nestedInput) {
+            $result = $this->_groupTemplate(compact('label', 'error', 'options'));
+        } else {
+            $result = $this->_groupTemplate(compact('input', 'label', 'error', 'options'));
+        }
         $result = $this->_inputContainerTemplate([
             'content' => $result,
             'error' => $error,
@@ -1087,7 +1092,7 @@ class FormHelper extends Helper
         }
 
         return $this->formatTemplate($groupTemplate, [
-            'input' => $options['input'],
+            'input' => isset($options['input']) ? $options['input'] : [],
             'label' => $options['label'],
             'error' => $options['error'],
             'templateVars' => isset($options['options']['templateVars']) ? $options['options']['templateVars'] : []

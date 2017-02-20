@@ -45,8 +45,15 @@
 	<tbody>
 		<tr>
 			<td>
+        <a href="<?php echo $this->Url->build(['controller' => 'lessons','action' =>'lesson0']); ?>">
+          DBの用意
+        </a>
+      </td>
+		</tr>
+		<tr>
+			<td>
         <a href="<?php echo $this->Url->build(['controller' => 'lessons','action' =>'lesson4']); ?>">
-          レッスン
+          ログイン機能の実装
         </a>
       </td>
 		</tr>

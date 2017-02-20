@@ -15,6 +15,16 @@ class LessonsController extends AppController{
     $this->viewBuilder()->layout('default_lesson');
 	}
 
+	public function index()
+	{
+
+	}
+
+	public function lesson0()
+	{
+		
+	}
+
 	public function lesson4()
 	{
 		$this->set('title','レッスン4');

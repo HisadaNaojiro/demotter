@@ -20,6 +20,11 @@ class BasesController extends AppController{
 		$this->set('title','レッスン一覧');
   }
 
+	public function base()
+	{
+		$this->set('title','PHP初期設定');
+	}
+
 	public function base1()
 	{
 		$this->set('title','PHP基礎1');

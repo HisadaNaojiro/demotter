@@ -12,6 +12,11 @@ class User extends Entity{
     return !(empty($this->id))? $this->id : false;
   }
 
+  public function getName()
+  {
+    return !empty($this->name)? $this->name : false;
+  }
+
   public function setName($val)
   {
     $this->name = $val;
@@ -27,6 +32,15 @@ class User extends Entity{
   public function setPassword($val)
   {
     $this->password = $this->__hashPassword($val);
+    return $this;
+  }
+
+  public function setTimeStamp()
+  {
+    $date = date('Y-m-d H:i:s');
+    $this->created = $date;
+    $this->modified = $date;
+
     return $this;
   }
 

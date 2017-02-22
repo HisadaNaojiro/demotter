@@ -10,7 +10,7 @@
       <a class="navbar-brand" href="#">Demo Twitter</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <?php if($authenticate): ?>
+      <?php if($currentUserRow): ?>
       <ul class="nav navbar-nav">
         <li>
           <a href="#">
@@ -31,7 +31,7 @@
       </p>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown ">
-        <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User<span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $currentUserRow->getName(); ?><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li>
               <a href="#">

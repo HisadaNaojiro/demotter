@@ -50,6 +50,9 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/users/logout',                  ['controller' => 'Users','action' => 'logout']);
     $routes->connect('/users/add',                     ['controller' => 'Users','action' => 'add']);
 
+    //ajax
+    $routes->connect('/ajax/add_micropost',            ['controller' => 'Ajax','action' => 'addMicropost']);
+
     //レッスン
     $routes->connect('/lesson/',                       ['controller' => 'Lessons','action' => 'index']);
     $routes->connect('/lesson/lesson0',                ['controller' => 'Lessons','action' => 'lesson0']);

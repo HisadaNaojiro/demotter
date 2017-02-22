@@ -12,7 +12,7 @@ class UsersController extends AppController{
 	{
 		parent::beforeFilter($event);
 		$this->Auth->allow(['add','logout']);
-		$this->set('authenticate',$this->Auth->user());
+		$this->set('currentUserRow',$this->Users->getRowById($this->Auth->user()['id']));
 	}
 
 	public function login()
@@ -38,7 +38,7 @@ class UsersController extends AppController{
 
 	public function index()
 	{
-
+		$this->set('MicropostRowset',TableRegistry::get('Microposts')->getRowsetByUserId($this->Auth->user()['id']));
 	}
 
 	public function add()
@@ -58,11 +58,13 @@ class UsersController extends AppController{
 		$UserRow = 	$this->Users->newEntity()
 											->setName($formData['name'])
 											->setEmail($formData['email'])
-											->setPassword($formData['password']);
+											->setPassword($formData['password'])
+											->setTimeStamp();
 		if(!$tableUsers->save($UserRow)){
 			throw new InternalErrorException();
 		}
-		$this->request->session()->write('User.id', $UserRow->getId());
-		return $this->redirect(['controller' => 'users' ,'action' => 'index']);
+
+		$this->Auth->setUser($UserRow);
+		$this->redirect($this->Auth->redirectUrl());
 	}
 }

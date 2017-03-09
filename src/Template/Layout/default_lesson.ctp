@@ -8,6 +8,14 @@
     </title>
     <?php echo  $this->Html->meta('icon') ?>
 
+    <style>
+      img{
+        height: 50%;
+        width: 40%;
+        margin-bottom: 15px;
+      }
+    </style>
+
     <?php echo  $this->Html->css('bootstrap.min.css') ?>
     <?php echo $this->Html->css('theme.css'); ?>
     <?php echo $this->Html->script('jquery-2.2.4.min.js'); ?>

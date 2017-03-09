@@ -57,6 +57,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/lesson/',                       ['controller' => 'Lessons','action' => 'index']);
     $routes->connect('/lesson/lesson0',                ['controller' => 'Lessons','action' => 'lesson0']);
     $routes->connect('/lesson/lesson4',                ['controller' => 'Lessons','action' => 'lesson4']);
+    $routes->connect('/lesson/lesson5',                ['controller' => 'Lessons','action' => 'lesson5']);
 
     $routes->connect('/lesson/base1',                  ['controller' => 'Bases','action' => 'base1']);
     $routes->connect('/lesson/base2',                  ['controller' => 'Bases','action' => 'base2']);

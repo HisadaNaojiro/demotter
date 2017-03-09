@@ -22,11 +22,16 @@ class LessonsController extends AppController{
 
 	public function lesson0()
 	{
-		
+
 	}
 
 	public function lesson4()
 	{
 		$this->set('title','レッスン4');
+	}
+
+	public function lesson5()
+	{
+		$this->set('title','レッスン5');
 	}
 }

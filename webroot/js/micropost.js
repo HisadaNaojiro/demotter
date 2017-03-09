@@ -12,6 +12,7 @@ Micropost.prototype = {
       form.setAttribute('id','js-register-micropost-form');
       form.className = 'form-control js-micropost-textarea';
       form.style.maxWidth = '694px';
+
       //ボタンの作成
       var textButton = document.createTextNode('投稿');
       var button = document.createElement('button');
@@ -104,7 +105,6 @@ Micropost.prototype = {
       micropost.closeForm(document.getElementById('micropost-register-bottom').parentNode);
     }
   });
-
   //ツイート投稿
   addListener(document.getElementById('js-micopost-create-form'),'click',function(e){
     var $this = this;
@@ -147,8 +147,6 @@ Micropost.prototype = {
 
 })();
 
-
-
 function hide(elem){
   elem.style.display = 'none';
 }
@@ -189,7 +187,6 @@ function serachChildren(children,target){
 
   return result;
 }
-
 
 function addListener(elem,event,listener){
   if(elem.addEventListener){

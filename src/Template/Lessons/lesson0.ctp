@@ -1,10 +1,3 @@
-<style>
-  img{
-    height: 50%;
-    width: 40%;
-    margin-bottom: 15px;
-  }
-</style>
 <h2 class="page-header">データの保存</h2>
 
 	<p>

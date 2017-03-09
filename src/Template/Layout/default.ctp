@@ -12,7 +12,7 @@
     <?php echo  $this->Html->css('font-awesome.min.css'); ?>
 
     <?php if($this->request->action !== 'login' && $this->request->action !== 'add') : ?>
-      <?php echo  $this->Html->css('demotter.css'); ?>]
+      <?php echo  $this->Html->css('demotter.css'); ?>
     <?php endif; ?>
     <?php echo $this->Html->css('theme.css'); ?>
 

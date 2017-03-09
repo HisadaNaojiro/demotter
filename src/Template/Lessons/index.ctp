@@ -57,5 +57,12 @@
         </a>
       </td>
 		</tr>
+		<tr>
+			<td>
+        <a href="<?php echo $this->Url->build(['controller' => 'lessons','action' =>'lesson5']); ?>">
+          ツイート投稿機能の実装
+        </a>
+      </td>
+		</tr>
 	</tbody>
 </table>

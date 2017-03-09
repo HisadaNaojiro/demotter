@@ -23,6 +23,7 @@ class AjaxController extends AppController{
       $this->response->statusCode(400);
       return;
     }
+
     $formData = $this->request->data;
     $Micropost = TableRegistry::get('Microposts');
     $MicropostForm = new MicropostForm;

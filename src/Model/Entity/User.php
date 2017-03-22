@@ -23,6 +23,11 @@ class User extends Entity{
     return $this;
   }
 
+  public function getUserId()
+  {
+    return !(empty($this->user_id))? $this->user_id : false;
+  }
+
   public function setEmail($val)
   {
     $this->email = $val;

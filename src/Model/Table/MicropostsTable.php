@@ -16,8 +16,8 @@ class MicropostsTable extends Table{
  public function getRowsetByUserId($id)
  {
    $query =  $this->find('all')
-                  ->where(['user_id' => $id,'valid' => $this->__statusPublic])
-                  ->order(['id' => 'DESC']);
+                  ->where(['microposts.user_id' => $id,'microposts.valid' => $this->__statusPublic])
+                  ->order(['microposts.id' => 'DESC']);
    return $query->all();
  }
 }

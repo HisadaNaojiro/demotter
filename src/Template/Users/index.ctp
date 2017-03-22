@@ -1,6 +1,8 @@
 <div
   id="data-ajax-url-list"
-  data-ajax-post-micropost-url="<?php echo $this->Url->build(['controller' => 'ajax','action' => 'add_micropost']);?>"
+  data-ajax-post-micropost-url="<?php echo $this->Url->build(['controller' => 'ajax','action' => 'addMicropost']);?>"
+  data-ajax-show-micropost-url="<?php echo $this->Url->build(['controller' => 'ajax','action' => 'showMicropost']);?>"
+  data-ajax-post-replay-url="<?php echo $this->url->build(['controller' => 'ajax','action' =>'addReplay']);?>"
   data-user-id = "<?php echo h($currentUserRow->getId()); ?>"
 >
 
@@ -51,7 +53,13 @@
         <?php if(!empty($MicropostRowset)): ?>
           <?php foreach($MicropostRowset as $MicropostRow): ?>
     				<div class="each-paginate-micropost-space">
-    						<div data-toggle="modal"  data-micropost-id="" class="each-micropost-space each-micropost-border" data-user-id="">
+    						<div
+                  data-toggle="modal"
+                  data-micropost-id="<?php echo h($MicropostRow->getId());?>"
+                  class="each-micropost-space each-micropost-border"
+                  data-recipient="<?php echo h($MicropostRow->getUserName());?>"
+                  data-user-id="<?php echo h($MicropostRow->getUserId());?>"
+                >
     							<div class="micropost-content-space">
     								<div class="micropost-user-info">
     									<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php echo h($currentUserRow->getName());?></p>
@@ -62,10 +70,10 @@
     									</p>
     								</div>
     							</div>
-    						</div>
     				</div>
           <?php endforeach; ?>
       <?php endif; ?>
 		</div>
 	</div>
 </div>
+<?php echo $this->element('modal'); ?>

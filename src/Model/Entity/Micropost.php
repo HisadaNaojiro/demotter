@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use Cake\ORM\TableRegistry;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
@@ -20,6 +21,12 @@ class Micropost extends Entity{
   public function getUserId()
   {
     return !empty($this->user_id)? $this->user_id : false;
+  }
+
+  public function getUserName()
+  {
+    $UserRow = TableRegistry::get('Users')->getRowById($this->getUserId());
+    return $UserRow->getName();
   }
 
   public function setContent($val)

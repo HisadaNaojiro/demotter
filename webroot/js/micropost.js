@@ -2,6 +2,7 @@
 var Micropost = function(){}
 Micropost.elem = document.getElementById('js-micropost-text-form');
 Micropost.registerUrl = document.getElementById('data-ajax-url-list').getAttribute('data-ajax-post-micropost-url');
+Micropost.ShowUrl = document.getElementById('data-ajax-url-list').getAttribute('data-ajax-show-micropost-url');
 Micropost.prototype = {
   openForm : function(elem){    //textarea生成
       hide(document.getElementById('js-micropost-text-form'));
@@ -44,6 +45,7 @@ Micropost.prototype = {
     eachMicropostSpace.setAttribute('data-toggle','modal');
     eachMicropostSpace.setAttribute('data-micropost-id',MicropostRow.id);
     eachMicropostSpace.setAttribute('data-user-id',MicropostRow.user_id);
+    eachMicropostSpace.setAttribute('data-recipient',MicropostRow.user_name);
 
     var micropostContentSpace = document.createElement('div');
     micropostContentSpace.className = 'micropost-content-space';
@@ -81,9 +83,54 @@ Micropost.prototype = {
 
 };
 /*-----------------------------------------------------*/
+/*---------------------- Replayオブジェクト -----------------------*/
+var Replay = function(){};
+Replay.registerUrl = document.getElementById('data-ajax-url-list').getAttribute('data-ajax-post-replay-url');
+Replay.prototype = {
+  setUserNameLength : function(len){
+    this.nameLength = len
+  },
+  getUserNameLength: function(){
+    return this.nameLength;
+  },
+  showContent : function(elem){
+    var eachMicropostSpace = document.createElement('div');
+    eachMicropostSpace.className = 'each-micropost-space';
+    eachMicropostSpace.setAttribute('data-user_id',elem.user_id);
+    eachMicropostSpace.setAttribute('data-replay_id',elem.id);
+    eachMicropostSpace.setAttribute('data-micropost-id',elem.micropost_id);
+    eachMicropostSpace.setAttribute('data-recipient',elem.user_name);
+
+    //ユーザ名
+    var micropostUserInfo = document.createElement('div');
+    micropostUserInfo.className = 'micropost-user-info';
+    var micropostUserInfoP = document.createElement('p');
+    var micropostUserInfoSpan = document.createElement('span');
+    micropostUserInfoSpan.className = 'glyphicon glyphicon-user';
+    micropostUserInfoSpan.setAttribute('aria-hidden',true);
+    micropostUserInfoP.appendChild(micropostUserInfoSpan);
+    micropostUserInfoP.appendChild(document.createTextNode(elem.user_name));
+
+    micropostUserInfo.appendChild(micropostUserInfoP);
+
+    //返信ツイート
+    var micropostContent = document.createElement('div');
+    micropostContent.className = 'micropost-content';
+    var micropostContentP = document.createElement('p');
+    micropostContentP.innerHTML = elem.content;
+
+    micropostContent.appendChild(micropostContentP);
+
+    eachMicropostSpace.appendChild(micropostUserInfo);
+    eachMicropostSpace.appendChild(micropostContent);
+    return eachMicropostSpace;
+  }
+};
+/*--------------------------------------------------------------*/
 (function(){
 
   var micropost = new Micropost();
+  var replay = new Replay();
 
   //ツイート入力画面の生成
   addListener(Micropost.elem,'click',function(e){
@@ -142,8 +189,117 @@ Micropost.prototype = {
     }).fail(function(status){
       showAlert($this,'ツイートは0文字以上140文字以内で入力してください');
     });
+  });
+
+
+  //返信表示
+  addListener(document.getElementById('ovarall-micropost-space'),'click',function(e){
+    var event = e.target;
+    var modal = document.getElementById('micropostContentModal');
+    if(
+      event.getAttribute('id') === 'ovarall-micropost-space'||
+      event.className === 'micropost-replay-button fa fa-reply' ||
+      modal.contains(event)
+    ){
+      return false;
+    }
+
+    var modalContentSpace = modal.getElementsByClassName('modal-content')[0];
+    var modalMicropostSpace = modal.getElementsByClassName('modal-micropost-space')[0];
+    var eachMicropostSpace = document.getElementsByClassName('each-micropost-space');
+    var jsMicropostReplayContentSpace = modal.getElementsByClassName('js-micropost-replay')[0];
+    var jsReplaySpace = modal.getElementsByClassName('js-micropost-replay')[0];
+
+    for (var i = 0; i < eachMicropostSpace.length ; i++){
+      if(eachMicropostSpace[i].contains(event)){
+        eachMicropostSpace = eachMicropostSpace[i];
+        break;
+      }
+    }
+    var   micropostId = eachMicropostSpace.getAttribute('data-micropost-id'),
+          recipient = eachMicropostSpace.getAttribute('data-recipient').split(' '),
+          content = eachMicropostSpace.getElementsByClassName('micropost-content-space')[0].innerHTML,
+          detailLink = Micropost.ShowUrl,
+          html = '';
+
+    for (var i = 0,len = recipient.length; i < len; i++){
+    			 html += '<a href="' + detailLink + '?name=' + recipient[i] + '">' + recipient[i] + '</a> ';
+    }
+		modalMicropostSpace.setAttribute('data-micropost-id',micropostId);
+    modal.getElementsByClassName('modal-content')[0].setAttribute('data-user-id',eachMicropostSpace.getAttribute('data-user-id'));
+
+
+    jsMicropostReplayContentSpace.innerHTML = html
+    jsMicropostReplayContentSpace.focus();
+
+    jsReplaySpace.style.height = '50px';
+    jsReplaySpace.style.overflowY = 'scroll';
+
+		replay.setUserNameLength(jsReplaySpace.textContent.length);
+    modalMicropostSpace.innerHTML = content;
+
+    $.ajax({
+      type  : 'POST',
+      datatype  : 'JSON',
+      data : {'micropost_id' : micropostId},
+      url : Micropost.ShowUrl
+    }).done(function(response){
+      var replayContent;
+      while(true){
+          var modalEachMicropostSpace = modalContentSpace.getElementsByClassName('each-micropost-space');
+          if(modalEachMicropostSpace.length === 0){
+            break;
+          }
+          removeElement(modalContentSpace,modalEachMicropostSpace[0]);
+      }
+      for(var i = 0; i < response.ReplayRowset.length ; i++){
+        replayContent = replay.showContent(response.ReplayRowset[i]);
+        modalContentSpace.appendChild(replayContent);
+      }
+      $(modal).modal();
+    }).fail(function(status){
+      showAlert($this,'ツイートは0文字以上140文字以内で入力してください');
+    });
 
   });
+
+  //返信投稿
+  addListener(document.getElementById('micropostContentModal'),'click',function(e){
+    var event = e.target;
+    if(event.className !== 'btn btn-warning submit-replay'){
+      return;
+    }
+
+    var jsMicropostReplayForm = this.getElementsByClassName('js-micropost-replay')[0];
+    var modalMicropostSpace = this.getElementsByClassName('modal-micropost-space')[0];
+    var modalContent = this.getElementsByClassName('modal-content')[0];
+    var data = {
+      'Replay[content]' : jsMicropostReplayForm.innerHTML,
+      'Replay[micropost_id]' : modalMicropostSpace.getAttribute('data-micropost-id'),
+      'Replay[user_id]' : modalContent.getAttribute('data-user-id'),
+      'Replay[other_user_id]' : document.getElementById('data-ajax-url-list').getAttribute('data-user-id')
+    };
+		$.ajax({
+			'type'		: 'POST',
+			'url'		: Replay.registerUrl,
+			'data' 		: data,
+			'dataType'	:'json'
+		}).done(function(data){
+      var alert = document.createElement('div');
+      alert.className = 'alert alert-info';
+      alert.setAttribute('role','alert');
+      alert.textContent = '返信を投稿しました';
+      var row = document.getElementsByClassName('row')[0];
+      row.insertBefore(alert, row.firstChild);
+
+      setTimeout(function(){
+        removeElement(row,alert);
+      },2000);
+		}).fail(function(status){
+        alert('返信の投稿に失敗しました')
+		});
+  });
+
 
 })();
 
@@ -164,7 +320,7 @@ function show(elem){
 }
 
 function removeElement(elem,child){
-  elem.removeChild(child);
+    elem.removeChild(child);
 }
 
 function isArray(obj) {
@@ -184,7 +340,6 @@ function serachChildren(children,target){
       result = true;
     }
   }
-
   return result;
 }
 

@@ -51,7 +51,9 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/users/add',                     ['controller' => 'Users','action' => 'add']);
 
     //ajax
+    $routes->connect('/ajax/show_micropost',            ['controller' => 'Ajax','action' => 'showMicropost']);
     $routes->connect('/ajax/add_micropost',            ['controller' => 'Ajax','action' => 'addMicropost']);
+    $routes->connect('/ajax/add_replay',            ['controller' => 'Ajax','action' => 'addReplay']);
 
     //レッスン
     $routes->connect('/lesson/',                       ['controller' => 'Lessons','action' => 'index']);

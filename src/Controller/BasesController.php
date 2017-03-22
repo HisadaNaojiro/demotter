@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use App\Form\UserForm;
 use Cake\Event\Event;
 
-class BasesController extends AppController{
+class TestController extends AppController{
 
 	public function beforeFilter(Event $event)
 	{
